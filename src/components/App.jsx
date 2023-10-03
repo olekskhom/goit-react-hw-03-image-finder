@@ -36,15 +36,12 @@ export class App extends Component {
         if (data.hits.length === 0) {
           return Notify.failure('Sorry, but nothing found');
         }
+        const hasImages = data.total > data.hits.length && data.total - page * 12 >= 0;
 
-        if (
-          (data.total > data.hits.length && data.total - page * 12 >= 0) ||
-          gallery.length === 0
-        ) {
-          this.setState({ showBtn: true });
-        }
-
-        this.setState({ gallery: [...gallery, ...data.hits] });
+        this.setState(prevState => ({
+          showBtn: hasImages,
+          gallery: [...prevState.gallery, ...data.hits],
+        }));
       } catch (error) {
         console.log(error);
       } finally {
@@ -64,17 +61,21 @@ export class App extends Component {
 
   render() {
     const { gallery, searchQuery, isLoader, showBtn } = this.state;
+    const hasImages = gallery.length > 0; 
+
     return (
       <div className={css.container}>
         <Searchbar handleSearch={this.handleSearch} />
 
-        {gallery.length > 0 && (
+        {hasImages && (
           <ImageGallery gallery={gallery} alt={searchQuery} />
         )}
 
         {isLoader && <Loader />}
 
-        {showBtn && <Button onClick={this.handleClickButton} />}
+        {showBtn && (
+          <Button onClick={this.handleClickButton} hasImages={hasImages} />
+        )}
       </div>
     );
   }
