@@ -27,7 +27,7 @@ export class App extends Component {
   };
 
   async componentDidUpdate(prevProps, prevState) {
-    const { page, searchQuery, gallery } = this.state;
+    const { page, searchQuery } = this.state;
 
     if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
       try {
