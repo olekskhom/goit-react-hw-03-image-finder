@@ -61,6 +61,7 @@ export class App extends Component {
 
   render() {
     const { gallery, searchQuery, isLoader, showBtn } = this.state;
+    // перевірка зображень
     const hasImages = gallery.length > 0; 
 
     return (
